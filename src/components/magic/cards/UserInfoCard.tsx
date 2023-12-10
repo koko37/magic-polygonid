@@ -1,50 +1,54 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import Divider from '@/components/ui/Divider';
-import { LoginProps } from '@/utils/types';
-import { logout } from '@/utils/common';
-import { useMagic } from '../MagicProvider';
-import Card from '@/components/ui/Card';
-import CardHeader from '@/components/ui/CardHeader';
-import CardLabel from '@/components/ui/CardLabel';
-import Spinner from '@/components/ui/Spinner';
-import { getNetworkName, getNetworkToken } from '@/utils/network';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Divider from "@/components/ui/Divider";
+import { LoginProps } from "@/utils/types";
+import { logout } from "@/utils/common";
+import { useMagic } from "../MagicProvider";
+import Card from "@/components/ui/Card";
+import CardHeader from "@/components/ui/CardHeader";
+import CardLabel from "@/components/ui/CardLabel";
+import Spinner from "@/components/ui/Spinner";
+import { getNetworkName, getNetworkToken } from "@/utils/network";
 
 const UserInfo = ({ token, setToken }: LoginProps) => {
-  const { magic, web3 } = useMagic();
+  const { magic, web3, network } = useMagic();
 
-  const [balance, setBalance] = useState('...');
-  const [copied, setCopied] = useState('Copy');
+  const [balance, setBalance] = useState("...");
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const [publicAddress, setPublicAddress] = useState(localStorage.getItem('user'));
+  const [copiedAddress, setCopiedAddress] = useState("Copy");
+  const [publicAddress, setPublicAddress] = useState(
+    localStorage.getItem("user")
+  );
 
   useEffect(() => {
     const checkLoginandGetBalance = async () => {
+      console.log("Fetching public address and did ...");
+
       const isLoggedIn = await magic?.user.isLoggedIn();
       if (isLoggedIn) {
         try {
           const metadata = await magic?.user.getInfo();
           if (metadata) {
-            localStorage.setItem('user', metadata?.publicAddress!);
+            localStorage.setItem("user", metadata?.publicAddress!);
             setPublicAddress(metadata?.publicAddress!);
           }
         } catch (e) {
-          console.log('error in fetching address: ' + e);
+          console.log("error in fetching address: " + e);
         }
       }
     };
     setTimeout(() => checkLoginandGetBalance(), 5000);
-  }, []);
+  }, [network]);
 
   const getBalance = useCallback(async () => {
     if (publicAddress && web3) {
       const balance = await web3.eth.getBalance(publicAddress);
       if (balance == BigInt(0)) {
-        setBalance('0');
+        setBalance("0");
       } else {
-        setBalance(web3.utils.fromWei(balance, 'ether'));
+        setBalance(web3.utils.fromWei(balance, "ether"));
       }
-      console.log('BALANCE: ', balance);
+      console.log("BALANCE: ", balance);
     }
   }, [web3, publicAddress]);
 
@@ -63,7 +67,7 @@ const UserInfo = ({ token, setToken }: LoginProps) => {
   }, [web3, refresh]);
 
   useEffect(() => {
-    setBalance('...');
+    setBalance("...");
   }, [magic]);
 
   const disconnect = useCallback(async () => {
@@ -72,27 +76,42 @@ const UserInfo = ({ token, setToken }: LoginProps) => {
     }
   }, [magic, setToken]);
 
-  const copy = useCallback(() => {
-    if (publicAddress && copied === 'Copy') {
-      setCopied('Copied!');
+  const copyAddress = useCallback(() => {
+    if (publicAddress && copiedAddress === "Copy") {
+      setCopiedAddress("Copied!");
       navigator.clipboard.writeText(publicAddress);
       setTimeout(() => {
-        setCopied('Copy');
+        setCopiedAddress("Copy");
       }, 1000);
     }
-  }, [copied, publicAddress]);
+  }, [copiedAddress, publicAddress]);
 
   return (
     <Card>
       <CardHeader id="Wallet">Wallet</CardHeader>
-      <CardLabel leftHeader="Status" rightAction={<div onClick={disconnect}>Disconnect</div>} isDisconnect />
+      <CardLabel
+        leftHeader="Status"
+        rightAction={<div onClick={disconnect}>Disconnect</div>}
+        isDisconnect
+      />
       <div className="flex-row">
         <div className="green-dot" />
-        <div className="connected">Connected to {getNetworkName()}</div>
+        <div className="connected">Connected to {getNetworkName(network)}</div>
       </div>
       <Divider />
-      <CardLabel leftHeader="Address" rightAction={!publicAddress ? <Spinner /> : <div onClick={copy}>{copied}</div>} />
-      <div className="code">{publicAddress?.length == 0 ? 'Fetching address..' : publicAddress}</div>
+      <CardLabel
+        leftHeader="Address"
+        rightAction={
+          !publicAddress ? (
+            <Spinner />
+          ) : (
+            <div onClick={copyAddress}>{copiedAddress}</div>
+          )
+        }
+      />
+      <div className="code">
+        {publicAddress?.length == 0 ? "Fetching address.." : publicAddress}
+      </div>
       <Divider />
       <CardLabel
         leftHeader="Balance"
@@ -107,7 +126,7 @@ const UserInfo = ({ token, setToken }: LoginProps) => {
         }
       />
       <div className="code">
-        {balance.substring(0, 7)} {getNetworkToken()}
+        {balance.substring(0, 7)} {getNetworkToken(network)}
       </div>
     </Card>
   );

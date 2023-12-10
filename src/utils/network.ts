@@ -1,12 +1,12 @@
 export enum Network {
-  POLYGON_MUMBAI = "polygon-mumbai",
   POLYGON = "polygon",
-  ETHEREUM_GOERLI = "ethereum-goerli",
+  POLYGON_MUMBAI = "mumbai",
+  ETHEREUM_GOERLI = "goerli",
   ETHEREUM = "ethereum",
 }
 
-export const getNetworkUrl = () => {
-  switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
+export const getNetworkUrl = (network: Network) => {
+  switch (network) {
     case Network.POLYGON:
       return "https://polygon-rpc.com/";
     case Network.POLYGON_MUMBAI:
@@ -20,8 +20,8 @@ export const getNetworkUrl = () => {
   }
 };
 
-export const getChainId = () => {
-  switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
+export const getChainId = (network: Network) => {
+  switch (network) {
     case Network.POLYGON:
       return 137;
     case Network.POLYGON_MUMBAI:
@@ -33,8 +33,8 @@ export const getChainId = () => {
   }
 };
 
-export const getNetworkToken = () => {
-  switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
+export const getNetworkToken = (network: Network) => {
+  switch (network) {
     case Network.POLYGON_MUMBAI:
     case Network.POLYGON:
       return "MATIC";
@@ -44,8 +44,8 @@ export const getNetworkToken = () => {
   }
 };
 
-export const getFaucetUrl = () => {
-  switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
+export const getFaucetUrl = (network: Network) => {
+  switch (network) {
     case Network.POLYGON_MUMBAI:
       return "https://faucet.polygon.technology/";
     case Network.ETHEREUM_GOERLI:
@@ -53,8 +53,8 @@ export const getFaucetUrl = () => {
   }
 };
 
-export const getNetworkName = () => {
-  switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
+export const getNetworkName = (network: Network) => {
+  switch (network) {
     case Network.POLYGON:
       return "Polygon (Mainnet)";
     case Network.POLYGON_MUMBAI:
@@ -66,8 +66,8 @@ export const getNetworkName = () => {
   }
 };
 
-export const getBlockExplorer = (address: string) => {
-  switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
+export const getBlockExplorer = (network: Network, address: string) => {
+  switch (network) {
     case Network.POLYGON:
       return `https://polygonscan.com/address/${address}`;
     case Network.POLYGON_MUMBAI:
