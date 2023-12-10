@@ -14,6 +14,10 @@ const GetIdToken = () => {
       const idToken = await magic.user.getIdToken();
       setDisabled(false);
       console.log("ID Token: " + idToken);
+
+      const decoded = JSON.parse(Buffer.from(idToken, "base64").toString("ascii"));
+      console.log("Decoded DID: ", JSON.stringify(decoded));
+
       showToast({
         message: "Please check console for the ID Token Log",
         type: "success",
