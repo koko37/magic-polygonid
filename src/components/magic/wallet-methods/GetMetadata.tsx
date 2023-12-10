@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
-import showToast from '@/utils/showToast';
-import { useMagic } from '../MagicProvider';
-import Spinner from '@/components/ui/Spinner';
+import React, { useCallback, useState } from "react";
+import showToast from "@/utils/showToast";
+import { useMagic } from "../MagicProvider";
+import Spinner from "@/components/ui/Spinner";
 
 const GetMetadata = () => {
   const { magic } = useMagic();
@@ -15,7 +15,7 @@ const GetMetadata = () => {
       setDisabled(false);
       showToast({
         message: `Public Address: ${userInfo.publicAddress}`,
-        type: 'success',
+        type: "success",
       });
     } catch (error) {
       setDisabled(false);
@@ -31,7 +31,7 @@ const GetMetadata = () => {
             <Spinner />
           </div>
         ) : (
-          'getInfo()'
+          "getInfo()"
         )}
       </button>
       <div className="wallet-method-desc">Retrieves information for the authenticated user.</div>

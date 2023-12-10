@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
-import DevLinks from './DevLinks';
-import Image from 'next/image';
-import Info from 'public/info.svg';
-import Link from 'public/link_white.svg';
-import Logo from 'public/logo.svg';
+import React, { useCallback } from "react";
+import DevLinks from "./DevLinks";
+import Image from "next/image";
+import Info from "public/info.svg";
+import Link from "public/link_white.svg";
+import Logo from "public/logo.svg";
 
 const MagicDashboardRedirect = () => {
   const onClick = useCallback(() => {
-    window.open('https://dashboard.magic.link/signup', '_blank');
+    window.open("https://dashboard.magic.link/signup", "_blank");
   }, []);
 
   return (

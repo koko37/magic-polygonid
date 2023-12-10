@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import { logout } from '@/utils/common';
-import { LoginProps } from '@/utils/types';
-import { useMagic } from '../MagicProvider';
-import Spinner from '@/components/ui/Spinner';
+import React, { useCallback, useState } from "react";
+import { logout } from "@/utils/common";
+import { LoginProps } from "@/utils/types";
+import { useMagic } from "../MagicProvider";
+import Spinner from "@/components/ui/Spinner";
 
 const Disconnect = ({ setToken }: LoginProps) => {
   const { magic } = useMagic();
@@ -28,7 +28,7 @@ const Disconnect = ({ setToken }: LoginProps) => {
             <Spinner />
           </div>
         ) : (
-          'disconnect()'
+          "disconnect()"
         )}
       </button>
       <div className="wallet-method-desc">Disconnects user from dApp.</div>

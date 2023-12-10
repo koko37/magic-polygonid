@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "public/link.svg";
 
 const SendTransaction = () => {
-  const { web3 } = useMagic();
+  const { web3, network } = useMagic();
   const [toAddress, setToAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [disabled, setDisabled] = useState(!toAddress || !amount);
@@ -67,11 +67,11 @@ const SendTransaction = () => {
   return (
     <Card>
       <CardHeader id="send-transaction">Send Transaction</CardHeader>
-      {getFaucetUrl() && (
+      {getFaucetUrl(network) && (
         <div>
-          <a href={getFaucetUrl()} target="_blank" rel="noreferrer">
+          <a href={getFaucetUrl(network)} target="_blank" rel="noreferrer">
             <FormButton onClick={() => null} disabled={false}>
-              Get Test {getNetworkToken()}
+              Get Test {getNetworkToken(network)}
               <Image src={Link} alt="link-icon" className="ml-[3px]" />
             </FormButton>
           </a>
@@ -88,7 +88,7 @@ const SendTransaction = () => {
       <FormInput
         value={amount}
         onChange={(e: any) => setAmount(e.target.value)}
-        placeholder={`Amount (${getNetworkToken()})`}
+        placeholder={`Amount (${getNetworkToken(network)})`}
       />
       {amountError ? (
         <ErrorText className="error">Invalid amount</ErrorText>

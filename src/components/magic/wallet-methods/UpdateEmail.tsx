@@ -1,16 +1,16 @@
-import React, { useCallback, useState } from 'react';
-import ErrorText from '@/components/ui/ErrorText';
-import Spacer from '@/components/ui/Spacer';
-import { useMagic } from '../MagicProvider';
-import Spinner from '@/components/ui/Spinner';
-import FormInput from '@/components/ui/FormInput';
-import showToast from '@/utils/showToast';
-import { RPCError } from 'magic-sdk';
+import React, { useCallback, useState } from "react";
+import ErrorText from "@/components/ui/ErrorText";
+import Spacer from "@/components/ui/Spacer";
+import { useMagic } from "../MagicProvider";
+import Spinner from "@/components/ui/Spinner";
+import FormInput from "@/components/ui/FormInput";
+import showToast from "@/utils/showToast";
+import { RPCError } from "magic-sdk";
 
 const UpdateEmail = () => {
   const { magic } = useMagic();
   const [disabled, setDisabled] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
 
   const updateEmail = useCallback(async () => {
@@ -22,17 +22,17 @@ const UpdateEmail = () => {
       } else {
         setDisabled(true);
         await magic.auth.updateEmailWithUI({ email, showUI: true });
-        showToast({ message: 'Email Updated!', type: 'success' });
+        showToast({ message: "Email Updated!", type: "success" });
         setDisabled(false);
-        setEmail('');
+        setEmail("");
       }
     } catch (error) {
       setDisabled(false);
       console.error(error);
       if (error instanceof RPCError) {
-        showToast({ message: error.message, type: 'error' });
+        showToast({ message: error.message, type: "error" });
       } else {
-        showToast({ message: 'Update email failed', type: 'error' });
+        showToast({ message: "Update email failed", type: "error" });
       }
     }
   }, [magic, email]);
@@ -51,7 +51,7 @@ const UpdateEmail = () => {
             <Spinner />
           </div>
         ) : (
-          'updateEmail()'
+          "updateEmail()"
         )}
       </button>
       <div className="wallet-method-desc">
